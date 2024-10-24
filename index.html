@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pac-Man</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+        }
+        canvas {
+            border: 1px solid white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let pacMan = {
+            x: 200,
+            y: 200,
+            size: 20,
+            speed: 5,
+            dx: 5,
+            dy: 0
+        };
+
+        function drawPacMan() {
+            ctx.beginPath();
+            ctx.arc(pacMan.x, pacMan.y, pacMan.size, 0.2 * Math.PI, 1.8 * Math.PI);
+            ctx.lineTo(pacMan.x, pacMan.y);
+            ctx.fillStyle = 'yellow';
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPacMan();
+
+            pacMan.x += pacMan.dx;
+            pacMan.y += pacMan.dy;
+
+            requestAnimationFrame(update);
+        }
+
+        function changeDirection(e) {
+            if (e.key === 'ArrowRight' && pacMan.dx === 0) {
+                pacMan.dx = pacMan.speed;
+                pacMan.dy = 0;
+            } else if (e.key === 'ArrowLeft' && pacMan.dx === 0) {
+                pacMan.dx = -pacMan.speed;
+                pacMan.dy = 0;
+            } else if (e.key === 'ArrowUp' && pacMan.dy === 0) {
+                pacMan.dy = -pacMan.speed;
+                pacMan.dx = 0;
+            } else if (e.key === 'ArrowDown' && pacMan.dy === 0) {
+                pacMan.dy = pacMan.speed;
+                pacMan.dx = 0;
+            }
+        }
+
+        document.addEventListener('keydown', changeDirection);
+        update();
+    </script>
+</body>
+</html>
